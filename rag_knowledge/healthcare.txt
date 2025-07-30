@@ -1,0 +1,9 @@
+Patient vitals include heart rate, blood pressure, oxygen levels, and temperature.
+
+A high correlation between BMI and blood pressure may indicate cardiovascular risk.
+
+Diagnosis codes in healthcare data are often used for billing and treatment tracking.
+
+Anomalies in lab results may indicate medical issues or errors in measurement.
+
+Time series analysis is often used to monitor patient progress over time.

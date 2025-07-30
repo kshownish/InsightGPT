@@ -1,0 +1,11 @@
+Correlation is a statistical measure that indicates the extent to which two or more variables fluctuate together.
+
+A value of +1 indicates a perfect positive correlation, while −1 indicates a perfect negative correlation.
+
+Mean is the average of a set of numbers.
+
+Standard deviation measures how spread out the numbers in a data set are.
+
+Outliers can significantly affect the mean and standard deviation.
+
+Data visualization helps interpret trends and patterns.
