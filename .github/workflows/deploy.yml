@@ -22,11 +22,15 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             cd ${{ secrets.EC2_DIR }}
             git pull origin main
             sudo docker stop insightgpt || true
             sudo docker rm insightgpt || true
             sudo docker build -t insightgpt .
-            sudo docker run -d --name insightgpt -p 8501:8501 insightgpt
+            sudo docker run -d \
+              --name insightgpt \
+              -p 8501:8501 \
+              -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+              insightgpt
           EOF
