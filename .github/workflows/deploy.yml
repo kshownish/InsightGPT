@@ -1,0 +1,36 @@
+name: Deploy to EC2
+
+# When this workflow should run
+on:
+  push:
+    branches: [main]  # Trigger on push to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # GitHub runner machine
+
+    steps:
+      # Step 1: Checkout the repo into the runner machine
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      # Step 2: Setup SSH access to your EC2 using your PEM key
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      # Step 3: SSH into EC2, pull the latest code, and run the app
+      - name: Deploy to EC2
+        run: |
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd ${{ secrets.EC2_DIR }}
+            git pull origin main
+            sudo docker stop insightgpt || true
+            sudo docker rm insightgpt || true
+            sudo docker build -t insightgpt .
+            sudo docker run -d --name insightgpt -p 8501:8501 insightgpt
+          EOF
+
